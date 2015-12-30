@@ -17,6 +17,8 @@ public class MainActivity extends ActionBarActivity {
 
         int activePlayer = 0;
 
+        boolean gameIsActive = true;
+
         // 2 means unplayed
 
         // game state
@@ -31,7 +33,7 @@ public class MainActivity extends ActionBarActivity {
 
             int tappedCounter = Integer.parseInt(counter.getTag().toString());
 
-            if (gameState[tappedCounter] == 2) {
+            if (gameState[tappedCounter] == 2 && gameIsActive) {
 
                 gameState[tappedCounter] = activePlayer;
 
@@ -60,6 +62,8 @@ public class MainActivity extends ActionBarActivity {
 
                         //Someone has  won!
 
+                        gameIsActive = false;
+
                         String winner = "Red";
 
                         if (gameState[winningPosition[0]] == 0) {
@@ -73,10 +77,33 @@ public class MainActivity extends ActionBarActivity {
                         winnerMessage.setText(winner + " has won");
 
                         LinearLayout layout = (LinearLayout) findViewById(R.id.playAgainLayout);
+
                         layout.setVisibility(View.VISIBLE);
 
 
+                    }else {
 
+                        boolean gameIsOver = true;
+
+                        for (int counterState : gameState) {
+
+                            if (counterState == 2) gameIsOver = false;
+
+                        }
+
+                        if (gameIsOver) {
+
+                            TextView winnerMessage = (TextView) findViewById(R.id.winnerMessage);
+
+                            winnerMessage.setText("It's a draw!");
+
+                            LinearLayout layout = (LinearLayout) findViewById(R.id.playAgainLayout);
+
+                            layout.setVisibility(View.VISIBLE);
+
+
+
+                        }
                     }
                 }
 
@@ -85,6 +112,8 @@ public class MainActivity extends ActionBarActivity {
         }
 
     public void playAgain(View view) {
+
+        gameIsActive = true;
 
         LinearLayout layout = (LinearLayout) findViewById(R.id.playAgainLayout);
 
