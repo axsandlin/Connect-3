@@ -1,5 +1,8 @@
 package com.example.asandlin.connect3;
 
+import android.content.Context;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -13,11 +16,15 @@ import android.widget.TextView;
 public class MainActivity extends ActionBarActivity {
 
 
-        // 0 = yellow, 1 = red
+        // 0 = trump, 1 = bernie
 
         int activePlayer = 0;
 
         boolean gameIsActive = true;
+
+        MediaPlayer mplayer;
+
+        AudioManager audioManager;
 
         // 2 means unplayed
 
@@ -26,6 +33,7 @@ public class MainActivity extends ActionBarActivity {
         int[] gameState =  {2, 2, 2, 2, 2, 2, 2, 2, 2};
 
     int [][] winningPositions = {{0,1,2}, {3, 4, 5}, {6, 7, 8}, {0, 3, 6}, {1, 4, 7}, {2, 5, 8}, {0, 4, 8}, {2, 4, 6}};
+
 
         public void dropIn(View view) {
 
@@ -41,13 +49,13 @@ public class MainActivity extends ActionBarActivity {
 
                 if (activePlayer == 0) {
 
-                    counter.setImageResource(R.drawable.yellow);
+                    counter.setImageResource(R.drawable.trump);
 
                     activePlayer = 1;
 
                 } else {
 
-                    counter.setImageResource(R.drawable.red);
+                    counter.setImageResource(R.drawable.bernie);
 
                     activePlayer = 0;
                 }
@@ -64,21 +72,28 @@ public class MainActivity extends ActionBarActivity {
 
                         gameIsActive = false;
 
-                        String winner = "Red";
+                        String winner = "Bernie";
+
+                        mplayer = MediaPlayer.create(this, R.raw.tinkle);
 
                         if (gameState[winningPosition[0]] == 0) {
 
-                            winner = "Yellow";
+                            winner = "Trump";
+
+                            mplayer = MediaPlayer.create(this, R.raw.machinegun);
 
                         }
 
                         TextView winnerMessage = (TextView) findViewById(R.id.winnerMessage);
 
-                        winnerMessage.setText(winner + " has won");
+                        winnerMessage.setText(winner + " has won!");
+
+                        mplayer.start();
 
                         LinearLayout layout = (LinearLayout) findViewById(R.id.playAgainLayout);
 
                         layout.setVisibility(View.VISIBLE);
+
 
 
                     }else {
@@ -97,9 +112,15 @@ public class MainActivity extends ActionBarActivity {
 
                             winnerMessage.setText("It's a draw!");
 
+                            mplayer = MediaPlayer.create(this, R.raw.crickets);
+
+                            mplayer.start();
+
                             LinearLayout layout = (LinearLayout) findViewById(R.id.playAgainLayout);
 
                             layout.setVisibility(View.VISIBLE);
+
+
 
 
 
@@ -142,6 +163,10 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+
+
     }
 
     @Override

@@ -125,7 +125,7 @@
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#f7f709"
+        android:background="#79c7fe"
         android:padding="30dp"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
